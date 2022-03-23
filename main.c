@@ -7,46 +7,28 @@
 #include <stdlib.h>
 #include <dirent.h>
 
-#define SIZE_OF_BUFF 30
+#define SIZE_OF_BUFF 80
 
-int main(int argc, char *argv[])
+int main()
 {
     char buffer_input[SIZE_OF_BUFF];
-    char cwd[512];
-    size_t s = 4;
-    DIR *mydir;
-    struct dirent *myfile;
-    struct stat mystat;
-
-    char buf[512];
+    char cwd[SIZE_OF_BUFF];
+    size_t s3 = 3;
+    DIR *d;
+    struct dirent *dir;
+    size_t s4 = 4;
 
     while (1)
     {
         puts("yes boss?");
 
         fgets(buffer_input, SIZE_OF_BUFF, stdin);
-        if (strncmp(buffer_input, "EXIT", s) == 0)
+        if (strncmp(buffer_input, "EXIT", s4) == 0) // A
         {
             break;
         }
-        if (strncmp(buffer_input, "ECHO", s) == 0)
-        {
-            printf("%s\n", buffer_input + 5);
-        }
-        if ((strncmp(buffer_input, "DIR", 3) == 0))
-        {
-            mydir = opendir(argv[1]); //THROW ERROR..
-            while ((myfile = readdir(mydir)) != NULL)
-            {
-                sprintf(buf, "%s/%s", argv[1], myfile->d_name);
-                stat(buf, &mystat);
-                printf("%zu", mystat.st_size);
-                printf(" %s\n", myfile->d_name);
-            }
-            closedir(mydir);
-        }
         if (getcwd(cwd, sizeof(cwd)) != NULL)
-        {
+        { // b
             printf("Current working dir: %s\n", cwd);
         }
         else
@@ -54,8 +36,24 @@ int main(int argc, char *argv[])
             perror("getcwd() error");
             break;
         }
+        if (strncmp(buffer_input, "ECHO", s4) == 0)
+        { // C
+            printf("%s\n", buffer_input + 5);
+        }
+        if ((strncmp(buffer_input, "DIR", s3) == 0))
+        { // d
+            printf("check dir");
+            d = opendir(".");
+            if (d)
+            {
+                while ((dir = readdir(d)) != NULL)
+                {
+                    printf("%s\n", dir->d_name);
+                }
+                closedir(d);
+            }
+        }
     }
-
-    printf("by");
+    printf("by\n");
     return 0;
 }
