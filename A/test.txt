@@ -1,0 +1,20 @@
+check only
+
+int cd(char *pth){
+   char path[1000];
+   strcpy(path,pth);
+
+   static char *prompt = "OS";
+   static char *a = ">";
+   char *token;
+
+   char cwd[256]; 
+   getcwd(cwd,sizeof(cwd));
+
+   strcat(cwd,"/"); 
+   strcat(cwd,path);
+   chdir(cwd);    
+
+   printf("%s-%s%s",prompt,path,a);
+   return 0;
+  }
