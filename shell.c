@@ -53,7 +53,7 @@ int main()
             if (sockfd == -1)
             {
                 printf("socket creation failed...\n");
-                exit(0);
+                exit(EXIT_FAILURE);
             }
             else
                 printf("Socket successfully created..\n");
@@ -91,7 +91,7 @@ int main()
                 printf("\n");
             }
         }
-        
+
         // 7
         else if (strncmp("CD", msg, 2) == 0)
         {
@@ -109,10 +109,47 @@ int main()
         //  }
 
         // 10
-        //  else if (/* condition */)
-        //  {
-        //      /* code */
-        //  }
+        else if (strncmp("COPY", msg, 4) == 0)
+        {
+            char c;
+            char src[15];
+            char dest[15];
+            char *tmp = msg + 5;
+            int isrc = 0;
+            while (msg[isrc] != ' ')
+            {
+                isrc++;
+            }
+            isrc++; //length of the src
+            char *tmp2 = tmp + isrc+1;
+            int idest = strlen(tmp2); // //LENGTH of the dest
+            memset(src, '\0', sizeof(src));
+            memset(dest, '\0', sizeof(dest));
+            strncpy(src, tmp, isrc);
+            strncpy(dest, tmp2, idest);
+            puts(src);
+            puts(dest);
+            FILE *from, *to;
+            from = fopen(src, "r");
+            if (from == NULL)
+            {
+                exit(EXIT_FAILURE);
+            }
+            to = fopen(dest, "w");
+            if (to == NULL)
+            {
+                fclose(from);
+                printf("Press any key to exit...\n");
+                exit(EXIT_FAILURE);
+            }
+            while ((c = fgetc(from)) != EOF)
+            {
+                fputc(c, to);
+            }
+            printf("File copied successfully.\n");
+            fclose(from);
+            fclose(to);
+        }
 
         // 8
         //  else
