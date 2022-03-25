@@ -1,3 +1,3 @@
 .PHONY: clean
 clean:
-	rm -f *.o *.a main ser
+	rm -f *.o *.a main ser exe

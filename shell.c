@@ -102,11 +102,7 @@ int main()
             }
         }
 
-        // 9
-        //  else if (/* condition */)
-        //  {
-        //      /* code */
-        //  }
+
 
         // 10
         else if (strncmp("COPY", msg, 4) == 0)
@@ -120,15 +116,13 @@ int main()
             {
                 isrc++;
             }
-            isrc++; //length of the src
-            char *tmp2 = tmp + isrc+1;
+            isrc++; // length of the src
+            char *tmp2 = tmp + isrc + 1;
             int idest = strlen(tmp2); // //LENGTH of the dest
             memset(src, '\0', sizeof(src));
             memset(dest, '\0', sizeof(dest));
             strncpy(src, tmp, isrc);
             strncpy(dest, tmp2, idest);
-            puts(src);
-            puts(dest);
             FILE *from, *to;
             from = fopen(src, "r");
             if (from == NULL)
@@ -151,11 +145,75 @@ int main()
             fclose(to);
         }
 
+        else if (strncmp("DELETE", msg, 6) == 0)
+        {
+            char name[15];
+            char *tmp = msg + 7;
+            if (unlink(tmp) != 0)
+            {
+                printf(" unlink() failed");
+            }
+        }
+
         // 8
-        //  else
-        //  {
-        //      system(buffer_input); // g implement with sys..
-        //  }
+        // else
+        // {
+        //     system(msg); //  implement with sys..
+        // }
+
+        else
+        {
+
+            pid_t pid = fork();
+            if (pid < 0)
+            {
+                perror("fork() faild..");
+                exit(EXIT_FAILURE);
+            }
+            else if (pid == 0)
+            {
+                char **res = NULL;
+                char *p = strtok(msg, " ");
+                int n_spaces = 0, i;
+
+                /* split string and append tokens to 'res' */
+
+                while (p)
+                {
+                    res = realloc(res, sizeof(char *) * ++n_spaces);
+
+                    if (res == NULL)
+                        exit(-1); /* memory allocation failed */
+
+                    res[n_spaces - 1] = p;
+
+                    p = strtok(NULL, " ");
+                }
+
+                /* realloc one extra element for the last NULL */
+
+                res = realloc(res, sizeof(char *) * (n_spaces + 1));
+                res[n_spaces] = 0;
+                
+                execvp(res[0], res);
+                /* free the memory allocated */
+
+                free(res);
+                continue;
+            }
+            wait(NULL);
+        }
     }
     return 0;
 }
+/*
+ans:
+The chdir command is a system call
+system is library function
+COPY implemented by using library function such as fopen() but we also using exit() that is a system calls..
+DELETE using unlink that is a system call
+
+
+bibliography:
+9: https://stackoverflow.com/questions/11198604/c-split-string-into-an-array-of-strings
+*/
