@@ -41,38 +41,57 @@ int main()
             char *r = msg + 5;
             printf("%s \n", r);
         }
+
         // 4
         else if (strncmp("TCP PORT", msg, 8) == 0)
         {
+
             // connect to server
+
             int sockfd, connfd;
+
             struct sockaddr_in servaddr, cli;
 
             // socket create and verification
+
             sockfd = socket(AF_INET, SOCK_STREAM, 0);
+
             if (sockfd == -1)
             {
+
                 printf("socket creation failed...\n");
-                exit(EXIT_FAILURE);
+
+                exit(0);
             }
+
             else
+
                 printf("Socket successfully created..\n");
+
             bzero(&servaddr, sizeof(servaddr));
 
             // assign IP, PORT
+
             servaddr.sin_family = AF_INET;
+
             servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-            servaddr.sin_port = htons(8080);
+
+            servaddr.sin_port = htons(8888);
 
             // connect the client socket to server socket
+
             int sockTT = connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
+
             dup2(1, 123);
+
             dup2(sockfd, 1);
         }
+
+        // 5
         else if (strncmp("LOCAL", msg, 5) == 0)
         {
             dup2(123, 1);
-            /// priny
+            /// print
         }
 
         // 6
@@ -102,7 +121,11 @@ int main()
             }
         }
 
-
+        // 8
+        // else
+        // {
+        //     system(msg); //  implement with sys..
+        // }
 
         // 10
         else if (strncmp("COPY", msg, 4) == 0)
@@ -155,12 +178,6 @@ int main()
             }
         }
 
-        // 8
-        // else
-        // {
-        //     system(msg); //  implement with sys..
-        // }
-
         else
         {
 
@@ -194,7 +211,7 @@ int main()
 
                 res = realloc(res, sizeof(char *) * (n_spaces + 1));
                 res[n_spaces] = 0;
-                
+
                 execvp(res[0], res);
                 /* free the memory allocated */
 
