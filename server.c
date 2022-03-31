@@ -6,7 +6,9 @@
 #include <sys/types.h>
 
 #define TRUE 1
-
+/**
+ * source : https://www.geeksforgeeks.org/tcp-server-client-implementation-in-c/
+ * */
 int main(int argc, char const *argv[])
 {
 

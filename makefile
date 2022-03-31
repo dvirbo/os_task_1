@@ -1,13 +1,13 @@
-all: shell Server
+CC = gcc
+FLAGS= -Wall -Werror -g
+all: shell  server 
+run: shell
 	./$^
-
-shell: shell.c
-	gcc shell.c $^ -o shell 
-
-Server: Server.c
-	gcc Server.c $^ -o server 
-
-.PHONY: clean
-
+shell: shell.o 
+	$(CC) $(FLAGS) $^ -o shell
+server: server.o
+	$(CC) $(FLAGS) $^ -o server
+%.o: %.c
+	$(CC) -c $< -o $@
 clean:
-	rm -f *.o * shell server
+	rm *.o shell server
