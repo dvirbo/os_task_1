@@ -1,13 +1,13 @@
 CC = gcc
 FLAGS= -Wall -Werror -g
-all: shell  server 
-run: shell
+all: main  server 
+run: main
 	./$^
-shell: shell.o 
-	$(CC) $(FLAGS) $^ -o shell
+main: main.o 
+	$(CC) $(FLAGS) $^ -o main
 server: server.o
 	$(CC) $(FLAGS) $^ -o server
 %.o: %.c
 	$(CC) -c $< -o $@
 clean:
-	rm *.o shell server
+	rm *.o main server
