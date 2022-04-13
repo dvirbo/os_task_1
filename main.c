@@ -15,7 +15,7 @@ int main()
 
     while (1)
     {
-        // 1
+        //  1
         puts("yes boss?");
         fgets(msg, sizeof(msg), stdin);
         msg[strlen(msg) - 1] = '\0';
